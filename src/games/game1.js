@@ -68,11 +68,22 @@
     constructor() {
       this.storageKey = "lumoland-settings";
       this.state = {
-        grade: "pre",
+        grade: "count-10",
         mute: false,
         ttsAuto: true,
       };
       this.load();
+    }
+
+    normalizeGrade(value) {
+      const legacyMap = {
+        pre: "count-10",
+        "1-2": "addsub-10",
+        "3-4": "addsub-100",
+        "5-6": "mult-10",
+      };
+      if (legacyMap[value]) return legacyMap[value];
+      return value || "count-10";
     }
 
     load() {
@@ -81,6 +92,7 @@
         if (raw) {
           this.state = { ...this.state, ...JSON.parse(raw) };
         }
+        this.state.grade = this.normalizeGrade(this.state.grade);
       } catch (error) {
         console.warn("Settings load failed", error);
       }
@@ -230,14 +242,17 @@
 
     createTask() {
       const grade = this.settings.get("grade");
-      if (grade === "pre") return this.createCounting();
-      if (grade === "1-2") return this.createAddSub(20);
-      if (grade === "3-4") return this.createAddSub(100, true);
-      return this.createAdvanced();
+      if (grade === "count-10") return this.createCounting(10);
+      if (grade === "addsub-10") return this.createAddSub(10);
+      if (grade === "addsub-100") return this.createAddSub(100);
+      if (grade === "mult-10") return this.createMultiplication(10);
+      if (grade === "div-100") return this.createDivision(100);
+      if (grade === "under-zero") return this.createUnderZero(20);
+      return this.createCounting(10);
     }
 
-    createCounting() {
-      const count = Math.floor(Math.random() * 8) + 2;
+    createCounting(max) {
+      const count = Math.floor(Math.random() * (max + 1));
       return {
         prompt: `Wie viele Glühwürmchen leuchten? (${count} leuchtende Punkte)`,
         answer: count,
@@ -245,7 +260,7 @@
       };
     }
 
-    createAddSub(max, includeMultiplication = false) {
+    createAddSub(max) {
       const useAdd = Math.random() > 0.4;
       let a = Math.floor(Math.random() * max) + 1;
       let b = Math.floor(Math.random() * max) + 1;
@@ -253,56 +268,96 @@
       const op = useAdd ? "+" : "-";
       const answer = useAdd ? a + b : a - b;
       const speech = `${a} ${useAdd ? "plus" : "minus"} ${b}`;
-      if (includeMultiplication && Math.random() > 0.7) {
-        a = Math.floor(Math.random() * 8) + 2;
-        b = Math.floor(Math.random() * 8) + 2;
-        return {
-          prompt: `${a} × ${b}`,
-          answer: a * b,
-          speech: `${a} mal ${b}`,
-        };
-      }
       return { prompt: `${a} ${op} ${b}`, answer, speech };
     }
 
-    createAdvanced() {
-      const useText = Math.random() > 0.6;
-      if (useText) {
-        const a = Math.floor(Math.random() * 6) + 3;
-        const b = Math.floor(Math.random() * 5) + 2;
-        return {
-          prompt: `Lumi sammelt ${a} Glühwürmchen pro Ast. Wie viele sind es nach ${b} Ästen?`,
-          answer: a * b,
-          speech: `Rechne ${a} mal ${b}.`,
-        };
+    createMultiplication(max) {
+      const a = Math.floor(Math.random() * max) + 1;
+      const b = Math.floor(Math.random() * max) + 1;
+      return {
+        prompt: `${a} × ${b}`,
+        answer: a * b,
+        speech: `${a} mal ${b}`,
+      };
+    }
+
+    createDivision(max) {
+      const divisor = Math.floor(Math.random() * 9) + 2;
+      const quotient = Math.floor(Math.random() * 9) + 2;
+      const dividend = divisor * quotient;
+      const boundedDividend = Math.min(dividend, max);
+      const adjustedQuotient = boundedDividend / divisor;
+      return {
+        prompt: `${boundedDividend} ÷ ${divisor}`,
+        answer: adjustedQuotient,
+        speech: `${boundedDividend} geteilt durch ${divisor}`,
+      };
+    }
+
+    createUnderZero(limit) {
+      const useAdd = Math.random() > 0.5;
+      let a = Math.floor(Math.random() * (limit * 2 + 1)) - limit;
+      let b = Math.floor(Math.random() * (limit * 2 + 1)) - limit;
+      if (!useAdd) {
+        b = Math.abs(b);
       }
-      const useDivide = Math.random() > 0.5;
-      if (useDivide) {
-        const b = Math.floor(Math.random() * 8) + 2;
-        const answer = Math.floor(Math.random() * 8) + 2;
-        const a = b * answer;
-        return {
-          prompt: `${a} ÷ ${b}`,
-          answer,
-          speech: `${a} geteilt durch ${b}`,
-        };
+      const op = useAdd ? "+" : "-";
+      const answer = useAdd ? a + b : a - b;
+      if (answer > limit || answer < -limit) {
+        return this.createUnderZero(limit);
       }
-      return this.createAddSub(60, true);
+      return {
+        prompt: `${a} ${op} ${b}`,
+        answer,
+        speech: `${a} ${useAdd ? "plus" : "minus"} ${b}`,
+      };
     }
 
     getSamples() {
       const grade = this.settings.get("grade");
-      const samples = [];
-      for (let i = 0; i < 3; i += 1) {
-        const task = this.createTask();
-        samples.push({ text: task.prompt, speech: task.speech || task.prompt });
+      if (grade === "count-10") {
+        return [
+          { text: "Zähle bis 5: •••••", speech: "Zähle bis fünf." },
+          { text: "Wie viele Sterne siehst du? (7)", speech: "Wie viele Sterne?" },
+          { text: "Zähle bis 10: ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐", speech: "Zähle bis zehn." },
+        ];
       }
-      if (grade === "pre") {
-        samples[0].text = "Zähle bis 5: •••••";
-        samples[1].text = "Wie viele Sterne siehst du? (7)";
-        samples[2].text = "Zähle bis 10: ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐";
+      if (grade === "addsub-10") {
+        return [
+          { text: "7 + 2", speech: "Sieben plus zwei." },
+          { text: "10 - 6", speech: "Zehn minus sechs." },
+          { text: "4 + 5", speech: "Vier plus fünf." },
+        ];
       }
-      return samples;
+      if (grade === "addsub-100") {
+        return [
+          { text: "48 + 12", speech: "Achtundvierzig plus zwölf." },
+          { text: "70 - 35", speech: "Siebzig minus fünfunddreißig." },
+          { text: "19 + 63", speech: "Neunzehn plus dreiundsechzig." },
+        ];
+      }
+      if (grade === "mult-10") {
+        return [
+          { text: "3 × 4", speech: "Drei mal vier." },
+          { text: "7 × 8", speech: "Sieben mal acht." },
+          { text: "9 × 6", speech: "Neun mal sechs." },
+        ];
+      }
+      if (grade === "div-100") {
+        return [
+          { text: "24 ÷ 6", speech: "Vierundzwanzig geteilt durch sechs." },
+          { text: "45 ÷ 5", speech: "Fünfundvierzig geteilt durch fünf." },
+          { text: "81 ÷ 9", speech: "Einundachtzig geteilt durch neun." },
+        ];
+      }
+      if (grade === "under-zero") {
+        return [
+          { text: "3 - 9", speech: "Drei minus neun." },
+          { text: "-5 + 7", speech: "Minus fünf plus sieben." },
+          { text: "10 - 18", speech: "Zehn minus achtzehn." },
+        ];
+      }
+      return [];
     }
   }
 

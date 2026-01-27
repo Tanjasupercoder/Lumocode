@@ -22,12 +22,14 @@
       </div>
       <div class="controls">
         <label class="field">
-          <span>Klassenstufe</span>
-          <select id="grade-select" aria-label="Klassenstufe wählen">
-            <option value="pre">Vorschule</option>
-            <option value="1-2">1–2</option>
-            <option value="3-4">3–4</option>
-            <option value="5-6">5–6</option>
+          <span>Rechenstufe</span>
+          <select id="grade-select" aria-label="Rechenstufe wählen">
+            <option value="count-10">Zählen bis 10</option>
+            <option value="addsub-10">Plus &amp; Minus bis 10</option>
+            <option value="addsub-100">Rechnen bis 100</option>
+            <option value="mult-10">Das kleine Einmaleins</option>
+            <option value="div-100">Teilen bis 100</option>
+            <option value="under-zero">Unter die Null</option>
           </select>
         </label>
         <label class="toggle">
@@ -51,11 +53,13 @@
       </section>
 
       <section class="explain card">
-        <div class="tabs" role="tablist" aria-label="Lernstufen">
-          <button class="chip" data-grade="pre" role="tab">Vorschule</button>
-          <button class="chip" data-grade="1-2" role="tab">1–2</button>
-          <button class="chip" data-grade="3-4" role="tab">3–4</button>
-          <button class="chip" data-grade="5-6" role="tab">5–6</button>
+        <div class="tabs" role="tablist" aria-label="Rechenstufen">
+          <button class="chip" data-grade="count-10" role="tab">Zählen bis 10</button>
+          <button class="chip" data-grade="addsub-10" role="tab">Plus &amp; Minus bis 10</button>
+          <button class="chip" data-grade="addsub-100" role="tab">Rechnen bis 100</button>
+          <button class="chip" data-grade="mult-10" role="tab">Das kleine Einmaleins</button>
+          <button class="chip" data-grade="div-100" role="tab">Teilen bis 100</button>
+          <button class="chip" data-grade="under-zero" role="tab">Unter die Null</button>
         </div>
         <div class="explain__content">
           <h2>Beispielaufgaben</h2>
