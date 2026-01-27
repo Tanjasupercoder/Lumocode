@@ -566,6 +566,10 @@ select:focus-visible,
   gap: 16px;
 }
 
+.game-page .hud {
+  display: grid;
+}
+
 .dialog-box__header {
   display: flex;
   align-items: center;
@@ -686,7 +690,7 @@ select:focus-visible,
     justify-content: flex-start;
     align-items: stretch;
     background-position: top center;
-    background-size: cover;
+    background-size: contain;
     padding-top: 12vh;
   }
 
@@ -767,6 +771,21 @@ select:focus-visible,
 
   .game-layout {
     grid-template-columns: 1fr;
+  }
+
+  .game-page .hud {
+    display: grid;
+    padding: 12px;
+  }
+
+  .keypad {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .keypad button {
+    min-height: 52px;
+    font-size: 1.1rem;
   }
 
   .canvas-area {
