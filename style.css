@@ -670,6 +670,114 @@ select:focus-visible,
   cursor: pointer;
 }
 
+@media (max-width: 600px) {
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .page {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .site-header,
+  .game-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand__logo {
+    width: 56px;
+    height: 56px;
+  }
+
+  .brand h1 {
+    font-size: 1.8rem;
+    line-height: 1.2;
+  }
+
+  .controls {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .field,
+  .toggle {
+    width: 100%;
+  }
+
+  select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .intro {
+    grid-template-columns: 1fr;
+  }
+
+  .cta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn,
+  .chip,
+  .toggle,
+  .map-hotspot {
+    min-height: 44px;
+  }
+
+  .tabs {
+    gap: 8px;
+  }
+
+  .chip {
+    flex: 1;
+  }
+
+  .sample-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal__content {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .canvas-area {
+    padding: 12px;
+  }
+
+  #game-canvas {
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+  }
+
+  .lumocode-home #app {
+    padding: 1.5rem 1rem;
+  }
+
+  .lumocode-home h1 {
+    font-size: 2rem;
+  }
+
+  .lumocode-home .card {
+    padding: 1.5em;
+  }
+}
+
 @media (max-width: 960px) {
   .game-layout {
     grid-template-columns: 1fr;
