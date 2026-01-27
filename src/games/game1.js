@@ -488,7 +488,7 @@
       const unlockedCount = this.platforms.filter((platform) => platform.unlocked).length;
       const index = clamp(unlockedCount, 1, this.maxBackgroundIndex);
       const suffix = index === 1 ? "" : String(index);
-      const src = `/public/assets/forest-night${suffix}.png`;
+      const src = `assets/forest-night${suffix}.png`;
       this.backgroundImageLoaded = false;
       this.backgroundImage.src = src;
       this.backgroundImage.onload = () => {
@@ -663,7 +663,7 @@
       this.currentAnswerText = "";
       this.completionImage = new Image();
       this.completionImageLoaded = false;
-      this.completionImage.src = "/public/assets/lumigluewuermchenfreundschaft.png";
+      this.completionImage.src = "assets/lumigluewuermchenfreundschaft.png";
       this.completionImage.onload = () => {
         this.completionImageLoaded = true;
       };
@@ -853,7 +853,7 @@
 
     handleCompletionExit() {
       if (!this.completionStart || now() < this.completionReadyAt) return;
-      window.location.href = "http://localhost:3000/public/lumoland";
+      window.location.href = "lumoland/index.html";
     }
 
     checkCompletionLanding() {
