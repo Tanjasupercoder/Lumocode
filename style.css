@@ -643,7 +643,7 @@ select:focus-visible,
 }
 
 .controls-panel {
-  display: flex;
+  display: none;
   justify-content: space-between;
   gap: 12px;
 }
@@ -762,7 +762,7 @@ select:focus-visible,
   #game-canvas {
     width: 100%;
     height: auto;
-    max-height: 70vh;
+    max-height: 60vh;
   }
 
   .lumocode-home #app {
@@ -770,7 +770,28 @@ select:focus-visible,
   }
 
   .lumocode-home h1 {
-    font-size: 2rem;
+    font-size: 1.6rem;
+    line-height: 1.2;
+  }
+
+  .lumocode-home p {
+    font-size: 1rem;
+  }
+
+  .lumocode-home button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .controls-panel {
+    display: flex;
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .touch-btn {
+    min-height: 52px;
+    font-size: 1.05rem;
   }
 
   .lumocode-home .card {
