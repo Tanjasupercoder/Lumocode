@@ -206,6 +206,7 @@ body {
   gap: 24px;
   padding: 24px;
   background: radial-gradient(circle at top, var(--night-bg-2), var(--night-bg));
+  background-color: var(--night-bg-2);
 }
 
 .site-header,
