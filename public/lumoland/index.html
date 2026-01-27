@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lumoland – Glühwürmchen-Jagd</title>
+    <link rel="stylesheet" href="../../style.css" />
+  </head>
+  <body class="page lumoland-start">
+    <header class="site-header">
+      <div class="brand">
+        <img
+          src="/assets/lumi.png"
+          alt="Lumi, das Glühwürmchen-Maskottchen"
+          class="brand__logo"
+        />
+        <div>
+          <p class="brand__eyebrow">Lumoland</p>
+          <h1>Glühwürmchen-Jagd</h1>
+          <p class="brand__sub">Neugierig entdecken, gemeinsam leuchten.</p>
+        </div>
+      </div>
+      <div class="controls">
+        <label class="field">
+          <span>Klassenstufe</span>
+          <select id="grade-select" aria-label="Klassenstufe wählen">
+            <option value="pre">Vorschule</option>
+            <option value="1-2">1–2</option>
+            <option value="3-4">3–4</option>
+            <option value="5-6">5–6</option>
+          </select>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="mute-toggle" />
+          <span>Ton aus</span>
+        </label>
+      </div>
+    </header>
+
+    <main class="intro">
+      <section class="intro__hero">
+        <div class="speech-bubble">
+          <p>„Es ist aber dunkel hier! Hilfst du mir?“</p>
+        </div>
+        <div class="cta">
+          <a class="btn btn--primary" href="/public/game.html">Jetzt entdecken!</a>
+          <button class="btn btn--ghost" id="about-btn" type="button">
+            Mehr über Lumi
+          </button>
+        </div>
+      </section>
+
+      <section class="explain card">
+        <div class="tabs" role="tablist" aria-label="Lernstufen">
+          <button class="chip" data-grade="pre" role="tab">Vorschule</button>
+          <button class="chip" data-grade="1-2" role="tab">1–2</button>
+          <button class="chip" data-grade="3-4" role="tab">3–4</button>
+          <button class="chip" data-grade="5-6" role="tab">5–6</button>
+        </div>
+        <div class="explain__content">
+          <h2>Beispielaufgaben</h2>
+          <ul id="sample-list" class="sample-list"></ul>
+          <p class="tts-note" id="tts-note" role="status"></p>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal" id="about-modal" aria-hidden="true" role="dialog">
+      <div class="modal__content">
+        <h2>Mehr über Lumi</h2>
+        <p>
+          Lumi liebt es, den Wald zu erkunden und mit dir Glühwürmchen zu sammeln. Gemeinsam
+          baut ihr Lichtbrücken, die den Weg nach Hause erhellen.
+        </p>
+        <button class="btn btn--primary" id="close-modal" type="button">Alles klar!</button>
+      </div>
+    </div>
+
+    <div class="confetti-layer" aria-hidden="true"></div>
+
+    <script src="../../src/games/game1.js"></script>
+  </body>
+</html>

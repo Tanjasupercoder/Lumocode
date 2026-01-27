@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lumoland – Glühwürmchen-Jagd</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="page game-page">
+    <header class="game-header">
+      <h1>Lumoland</h1>
+      <div class="game-header__actions">
+        <button class="icon-btn" id="photo-btn" type="button" aria-label="Foto-Modus">
+          📷
+        </button>
+        <button class="icon-btn" id="speak-btn" type="button" aria-label="Vorlesen">
+          🔊
+        </button>
+        <label class="toggle">
+          <input type="checkbox" id="mute-toggle" />
+          <span>Ton aus</span>
+        </label>
+      </div>
+    </header>
+
+    <main class="game-layout">
+      <section class="canvas-area">
+        <canvas id="game-canvas" width="960" height="540" aria-label="Spielwelt"></canvas>
+        <div class="vignette" aria-hidden="true"></div>
+        <div class="confetti-layer" aria-hidden="true"></div>
+      </section>
+
+      <section class="hud">
+        <div class="dialog-box card">
+          <div class="dialog-box__header">
+            <img src="../public/assets/lumi.png" alt="Lumi" />
+            <div>
+              <p class="dialog-box__label">Lumi sagt</p>
+              <p id="lumi-text">&nbsp;</p>
+            </div>
+          </div>
+          <div class="math-box">
+            <p id="task-text">Bereit für eine Aufgabe!</p>
+            <div class="answer-input" id="answer-input">&nbsp;</div>
+            <div class="keypad" id="keypad"></div>
+          </div>
+          <div class="meter" role="meter" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.1">
+            <span>Lichtmeter</span>
+            <div class="meter__bar">
+              <div class="meter__fill" id="meter-fill"></div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <script src="../src/games/game1.js"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "lumoland-gluehwuermchen-jagd",
+  "version": "1.0.0",
+  "description": "Kinderfreundliches Lernspiel in Vanilla JS, Canvas und WebAudio.",
+  "private": true,
+  "scripts": {
+    "start": "npx serve .",
+    "lint": "echo 'No lint configured'"
+  }
+}
