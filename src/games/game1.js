@@ -252,11 +252,13 @@
     }
 
     createCounting(max) {
-      const count = Math.floor(Math.random() * (max + 1));
+      const count = Math.floor(Math.random() * max) + 1;
       return {
-        prompt: `Wie viele Glühwürmchen leuchten? (${count} leuchtende Punkte)`,
+        type: "count",
+        count,
+        prompt: "Wie viele Glühwürmchen leuchten?",
         answer: count,
-        speech: `Zähle die Glühwürmchen. Wie viele sind es?`,
+        speech: "Zähle die Glühwürmchen. Wie viele sind es?",
       };
     }
 
@@ -318,7 +320,7 @@
       if (grade === "count-10") {
         return [
           { text: "Zähle bis 5: •••••", speech: "Zähle bis fünf." },
-          { text: "Wie viele Sterne siehst du? (7)", speech: "Wie viele Sterne?" },
+          { text: "Wie viele Sterne siehst du? ⭐⭐⭐⭐⭐⭐⭐", speech: "Wie viele Sterne?" },
           { text: "Zähle bis 10: ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐", speech: "Zähle bis zehn." },
         ];
       }
@@ -439,6 +441,10 @@
   // -----------------------------
   class FireflySystem {
     constructor() {
+      this.fireflies = [];
+    }
+
+    clear() {
       this.fireflies = [];
     }
 
@@ -713,6 +719,8 @@
       this.currentTask = null;
       this.activePlatform = null;
       this.taskActive = false;
+      this.lastTaskRef = null;
+      this.countingActive = false;
       this.mathBox = document.querySelector(".math-box");
       this.taskBubbleText = "";
       this.currentAnswerText = "";
@@ -782,6 +790,22 @@
         this.activePlatform.task = this.math.createTask();
       }
       this.currentTask = this.activePlatform.task;
+      if (this.currentTask !== this.lastTaskRef) {
+        if (this.lastTaskRef && this.lastTaskRef.type === "count") {
+          this.fireflies.clear();
+          this.countingActive = false;
+        }
+        if (this.currentTask && this.currentTask.type === "count") {
+          this.fireflies.clear();
+          this.fireflies.spawn(
+            this.currentTask.count,
+            { x: 140, y: 120, width: 680, height: 170 },
+            this.lightProgress
+          );
+          this.countingActive = true;
+        }
+        this.lastTaskRef = this.currentTask;
+      }
       this.taskBubbleText = this.currentTask.prompt;
       if (this.taskText) {
         this.taskText.textContent = this.taskActive ? "" : this.currentTask.prompt;
@@ -796,6 +820,10 @@
       if (Number(value) === Number(this.currentTask.answer)) {
         this.audio.success();
         this.setDialog("Wow! Jetzt leuchtet der Wald ✨");
+        if (this.currentTask.type === "count") {
+          this.fireflies.clear();
+          this.countingActive = false;
+        }
         this.level.unlockPlatform(this.activePlatform);
         this.fireflies.spawn(2 + Math.floor(Math.random() * 2), {
           x: 200,
@@ -1094,6 +1122,10 @@
           this.handleKey("←");
           return;
         }
+        if (event.key === "-" && this.settings.get("grade") === "under-zero") {
+          this.handleKey("-");
+          return;
+        }
         if (/^\d$/.test(event.key)) {
           this.handleKey(event.key);
         }
@@ -1112,6 +1144,9 @@
 
     buildKeypad() {
       const keys = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0", "←", "OK"];
+      if (this.settings.get("grade") === "under-zero") {
+        keys.splice(9, 0, "-");
+      }
       keys.forEach((key) => {
         const btn = document.createElement("button");
         btn.textContent = key;
@@ -1123,6 +1158,16 @@
 
     handleKey(key) {
       if (!this.answerInput) return;
+      if (key === "-") {
+        if (this.inputValue.startsWith("-")) {
+          this.inputValue = this.inputValue.slice(1);
+        } else {
+          this.inputValue = `-${this.inputValue}`;
+        }
+        this.answerInput.textContent = this.inputValue || " ";
+        this.game.currentAnswerText = this.inputValue;
+        return;
+      }
       if (key === "←") {
         this.inputValue = this.inputValue.slice(0, -1);
       } else if (key === "OK") {
