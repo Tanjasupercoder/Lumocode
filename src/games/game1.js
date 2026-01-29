@@ -264,9 +264,17 @@
 
     createAddSub(max) {
       const useAdd = Math.random() > 0.4;
-      let a = Math.floor(Math.random() * max) + 1;
-      let b = Math.floor(Math.random() * max) + 1;
-      if (!useAdd && a < b) [a, b] = [b, a];
+      const randInt = (min, maxValue) =>
+        Math.floor(Math.random() * (maxValue - min + 1)) + min;
+      let a = 1;
+      let b = 1;
+      if (useAdd) {
+        a = randInt(1, Math.max(1, max - 1));
+        b = randInt(1, Math.max(1, max - a));
+      } else {
+        a = randInt(1, max);
+        b = randInt(1, a);
+      }
       const op = useAdd ? "+" : "-";
       const answer = useAdd ? a + b : a - b;
       const speech = `${a} ${useAdd ? "plus" : "minus"} ${b}`;
@@ -319,9 +327,39 @@
       const grade = this.settings.get("grade");
       if (grade === "count-10") {
         return [
-          { text: "Zähle bis 5: •••••", speech: "Zähle bis fünf." },
-          { text: "Wie viele Sterne siehst du? ⭐⭐⭐⭐⭐⭐⭐", speech: "Wie viele Sterne?" },
-          { text: "Zähle bis 10: ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐", speech: "Zähle bis zehn." },
+          {
+            text:
+              "Z\u00e4hle bis 5: Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen",
+            speech: "Z\u00e4hle bis f\u00fcnf.",
+          },
+          {
+            text:
+              "Wie viele Gl\u00fchw\u00fcrmchen siehst du? Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen",
+            speech: "Wie viele Gl\u00fchw\u00fcrmchen?",
+          },
+          {
+            text:
+              "Z\u00e4hle bis 10: Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen",
+            speech: "Z\u00e4hle bis zehn.",
+          },
+        ];
+      }
+      if (grade === "count-10") {
+        return [
+          {
+            text: "Z\u00e4hle bis 5: Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen",
+            speech: "Z\u00e4hle bis f\u00fcnf.",
+          },
+          {
+            text:
+              "Wie viele Gl\u00fchw\u00fcrmchen siehst du? Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen Gl\u00fchw\u00fcrmchen",
+            speech: "Wie viele Gl\u00fchw\u00fcrmchen?",
+          },
+          {
+            text:
+              "Zähle bis 10: Glühwürmchen Glühwürmchen Glühwürmchen Glühwürmchen Glühwürmchen Glühwürmchen Glühwürmchen Glühwürmchen Glühwürmchen Glühwürmchen",
+            speech: "Zähle bis zehn.",
+          },
         ];
       }
       if (grade === "addsub-10") {
