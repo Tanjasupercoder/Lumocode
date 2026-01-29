@@ -225,12 +225,14 @@ body {
 }
 
 .brand__logo {
-  width: 96px;
-  height: 96px;
+  width: 112px;
+  height: 112px;
   border-radius: 50%;
   background: var(--night-bg-2);
   padding: 6px;
   box-shadow: var(--glow);
+  object-fit: cover;
+  object-position: center;
 }
 
 .brand__eyebrow {
@@ -711,8 +713,8 @@ select:focus-visible,
   }
 
   .brand__logo {
-    width: 72px;
-    height: 72px;
+    width: 88px;
+    height: 88px;
   }
 
   .brand h1 {
