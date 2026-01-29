@@ -370,8 +370,32 @@
     constructor(audio) {
       this.audio = audio;
       this.sprite = new Image();
+      this.spriteCanvas = null;
       this.spriteLoaded = false;
       this.sprite.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = this.sprite.width;
+        canvas.height = this.sprite.height;
+        const sctx = canvas.getContext("2d");
+        sctx.drawImage(this.sprite, 0, 0);
+        const imgData = sctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imgData.data;
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+          if (
+            r >= 245 &&
+            g >= 245 &&
+            b >= 245 &&
+            Math.abs(r - g) <= 8 &&
+            Math.abs(r - b) <= 8
+          ) {
+            data[i + 3] = 0;
+          }
+        }
+        sctx.putImageData(imgData, 0, 0);
+        this.spriteCanvas = canvas;
         this.spriteLoaded = true;
       };
       this.sprite.src = "assets/Lumisprite.png";
@@ -471,7 +495,7 @@
         const frameWidth = isJumping ? jumpFrameWidth : runFrameWidth;
         const sourceX = this.frameIndex * frameWidth;
         const sourceY = isJumping ? frameHeight : 0;
-        const drawScale = 0.1;
+        const drawScale = 0.2;
         const drawWidth = frameWidth * drawScale;
         const drawHeight = frameHeight * drawScale;
         const drawX = this.x + this.width * 0.5 - drawWidth * 0.5;
@@ -480,7 +504,7 @@
         ctx.save();
         ctx.imageSmoothingEnabled = true;
         ctx.drawImage(
-          this.sprite,
+          this.spriteCanvas || this.sprite,
           sourceX,
           sourceY,
           frameWidth,
