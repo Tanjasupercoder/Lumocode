@@ -369,6 +369,16 @@
   class PlayerLumi {
     constructor(audio) {
       this.audio = audio;
+      this.sprite = new Image();
+      this.spriteLoaded = false;
+      this.sprite.onload = () => {
+        this.spriteLoaded = true;
+      };
+      this.sprite.src = "assets/Lumisprite.png";
+      this.runFrameCount = 4;
+      this.jumpFrameCount = 3;
+      this.frameTime = 0;
+      this.frameIndex = 0;
       this.reset();
     }
 
@@ -422,9 +432,67 @@
         this.vy = 0;
         this.onGround = true;
       }
+
+      this.updateAnimation(dt);
+    }
+
+    updateAnimation(dt) {
+      const isMoving = Math.abs(this.vx) > 1;
+      if (!this.onGround) {
+        if (this.frameIndex >= this.jumpFrameCount) this.frameIndex = 0;
+        const frameDuration = 0.12;
+        this.frameTime += dt;
+        if (this.frameTime >= frameDuration) {
+          this.frameTime = 0;
+          this.frameIndex = (this.frameIndex + 1) % this.jumpFrameCount;
+        }
+        return;
+      }
+      if (!isMoving) {
+        this.frameIndex = 0;
+        this.frameTime = 0;
+        return;
+      }
+      if (this.frameIndex >= this.runFrameCount) this.frameIndex = 0;
+      const frameDuration = 0.09;
+      this.frameTime += dt;
+      if (this.frameTime >= frameDuration) {
+        this.frameTime = 0;
+        this.frameIndex = (this.frameIndex + 1) % this.runFrameCount;
+      }
     }
 
     draw(ctx) {
+      if (this.spriteLoaded) {
+        const frameHeight = this.sprite.height / 2;
+        const runFrameWidth = this.sprite.width / this.runFrameCount;
+        const jumpFrameWidth = this.sprite.width / this.jumpFrameCount;
+        const isJumping = !this.onGround;
+        const frameWidth = isJumping ? jumpFrameWidth : runFrameWidth;
+        const sourceX = this.frameIndex * frameWidth;
+        const sourceY = isJumping ? frameHeight : 0;
+        const drawScale = 0.62;
+        const drawWidth = frameWidth * drawScale;
+        const drawHeight = frameHeight * drawScale;
+        const drawX = this.x + this.width * 0.5 - drawWidth * 0.5;
+        const drawY = this.y + this.height - drawHeight;
+
+        ctx.save();
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(
+          this.sprite,
+          sourceX,
+          sourceY,
+          frameWidth,
+          frameHeight,
+          drawX,
+          drawY,
+          drawWidth,
+          drawHeight
+        );
+        ctx.restore();
+        return;
+      }
       ctx.save();
       ctx.fillStyle = "rgba(243,210,122,0.9)";
       ctx.shadowColor = "rgba(243,210,122,0.6)";
