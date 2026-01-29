@@ -668,6 +668,8 @@
     constructor(palette) {
       this.palette = palette;
       this.backgroundImage = new Image();
+      this.activeBackgroundImage = null;
+      this.pendingBackgroundImage = null;
       this.backgroundImageLoaded = false;
       this.maxBackgroundIndex = 8;
       this.groundPlatform = null;
@@ -680,14 +682,21 @@
       const index = clamp(unlockedCount, 1, this.maxBackgroundIndex);
       const suffix = index === 1 ? "" : String(index);
       const src = `assets/forest-night${suffix}.png`;
-      this.backgroundImageLoaded = false;
-      this.backgroundImage.src = src;
-      this.backgroundImage.onload = () => {
+      const nextImage = new Image();
+      this.pendingBackgroundImage = nextImage;
+      this.backgroundImageLoaded = Boolean(this.activeBackgroundImage);
+      nextImage.onload = () => {
+        if (this.pendingBackgroundImage !== nextImage) return;
+        this.activeBackgroundImage = nextImage;
         this.backgroundImageLoaded = true;
+        this.pendingBackgroundImage = null;
       };
-      this.backgroundImage.onerror = () => {
-        this.backgroundImageLoaded = false;
+      nextImage.onerror = () => {
+        if (this.pendingBackgroundImage !== nextImage) return;
+        this.pendingBackgroundImage = null;
+        if (!this.activeBackgroundImage) this.backgroundImageLoaded = false;
       };
+      nextImage.src = src;
     }
 
     generatePlatforms() {
@@ -762,8 +771,8 @@
     }
 
     drawBackground(ctx, lightProgress) {
-      if (this.backgroundImageLoaded) {
-        ctx.drawImage(this.backgroundImage, 0, 0, ctx.canvas.width, ctx.canvas.height);
+      if (this.activeBackgroundImage) {
+        ctx.drawImage(this.activeBackgroundImage, 0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.save();
         ctx.globalAlpha = 0.02;
         this.drawGradientOverlay(ctx, lightProgress);
