@@ -471,7 +471,7 @@
         const frameWidth = isJumping ? jumpFrameWidth : runFrameWidth;
         const sourceX = this.frameIndex * frameWidth;
         const sourceY = isJumping ? frameHeight : 0;
-        const drawScale = 0.62;
+        const drawScale = 0.1;
         const drawWidth = frameWidth * drawScale;
         const drawHeight = frameHeight * drawScale;
         const drawX = this.x + this.width * 0.5 - drawWidth * 0.5;
