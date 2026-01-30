@@ -57,6 +57,28 @@
   color: #535bf2;
 }
 
+.lumocode-home .impressum-link {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.lumocode-home .impressum-link:hover,
+.lumocode-home .impressum-link:focus-visible {
+  color: #ffffff;
+  text-decoration: underline;
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 3px;
+}
+
 .lumocode-home h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -185,6 +207,17 @@
 
   .lumocode-home button {
     background-color: #f9f9f9;
+  }
+
+  .lumocode-home .impressum-link {
+    color: rgba(33, 53, 71, 0.78);
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .lumocode-home .impressum-link:hover,
+  .lumocode-home .impressum-link:focus-visible {
+    color: #213547;
+    outline-color: rgba(33, 53, 71, 0.8);
   }
 }
 
@@ -832,6 +865,10 @@ select:focus-visible,
 
   .lumocode-home .card {
     padding: 1.5em;
+  }
+
+  .lumocode-home .impressum-link {
+    bottom: 12px;
   }
 }
 
