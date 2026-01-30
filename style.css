@@ -86,14 +86,12 @@
 .address-toggle__button {
   list-style: none;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: 10px 18px;
-  border-radius: var(--radius-md);
-  border: 2px solid var(--night-primary);
-  background: var(--night-bg-2);
+  display: inline;
+  min-height: unset;
+  padding: 0;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
   color: var(--text-soft);
   font-weight: 600;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -103,25 +101,20 @@
   display: none;
 }
 
-.address-toggle__button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--glow);
-}
-
 .address-toggle__button:focus-visible {
   outline: 3px solid var(--accent-warm);
   outline-offset: 3px;
-}
-
-.address-toggle[open] .address-toggle__button {
-  border-color: var(--accent-warm);
-  box-shadow: var(--glow);
 }
 
 .address-toggle__content {
   margin-top: 10px;
   color: var(--text-soft);
   line-height: 1.6;
+  display: none;
+}
+
+.address-toggle[open] .address-toggle__content {
+  display: block;
 }
 
 .lumocode-home h1 {
