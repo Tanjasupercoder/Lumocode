@@ -416,7 +416,6 @@
       this.spriteSources = [
         "assets/lumisprite.png",
         "/assets/lumisprite.png",
-        "/public/assets/lumisprite.png",
       ];
       this.spriteSourceIndex = 0;
       this.sprite.onload = () => {
