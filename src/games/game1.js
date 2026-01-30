@@ -408,35 +408,17 @@
     constructor(audio) {
       this.audio = audio;
       this.sprite = new Image();
-      this.spriteCanvas = null;
       this.spriteLoaded = false;
+      this.frameColumns = 4;
+      this.frameRows = 2;
+      this.frameWidth = 0;
+      this.frameHeight = 0;
       this.sprite.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = this.sprite.width;
-        canvas.height = this.sprite.height;
-        const sctx = canvas.getContext("2d");
-        sctx.drawImage(this.sprite, 0, 0);
-        const imgData = sctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imgData.data;
-        for (let i = 0; i < data.length; i += 4) {
-          const r = data[i];
-          const g = data[i + 1];
-          const b = data[i + 2];
-          if (
-            r >= 245 &&
-            g >= 245 &&
-            b >= 245 &&
-            Math.abs(r - g) <= 8 &&
-            Math.abs(r - b) <= 8
-          ) {
-            data[i + 3] = 0;
-          }
-        }
-        sctx.putImageData(imgData, 0, 0);
-        this.spriteCanvas = canvas;
+        this.frameWidth = Math.floor(this.sprite.width / this.frameColumns);
+        this.frameHeight = Math.floor(this.sprite.height / this.frameRows);
         this.spriteLoaded = true;
       };
-      this.sprite.src = "assets/Lumisprite.png";
+      this.sprite.src = "/assets/lumisprite.png";
       this.runFrameCount = 4;
       this.jumpFrameCount = 3;
       this.frameTime = 0;
@@ -526,14 +508,12 @@
 
     draw(ctx) {
       if (this.spriteLoaded) {
-        const frameHeight = this.sprite.height / 2;
-        const runFrameWidth = this.sprite.width / this.runFrameCount;
-        const jumpFrameWidth = this.sprite.width / this.jumpFrameCount;
         const isJumping = !this.onGround;
-        const frameWidth = isJumping ? jumpFrameWidth : runFrameWidth;
+        const frameWidth = this.frameWidth || 1;
+        const frameHeight = this.frameHeight || 1;
         const sourceX = this.frameIndex * frameWidth;
         const sourceY = isJumping ? frameHeight : 0;
-        const drawScale = 0.2;
+        const drawScale = this.height / frameHeight;
         const drawWidth = frameWidth * drawScale;
         const drawHeight = frameHeight * drawScale;
         const drawX = this.x + this.width * 0.5 - drawWidth * 0.5;
@@ -542,7 +522,7 @@
         ctx.save();
         ctx.imageSmoothingEnabled = true;
         ctx.drawImage(
-          this.spriteCanvas || this.sprite,
+          this.sprite,
           sourceX,
           sourceY,
           frameWidth,
