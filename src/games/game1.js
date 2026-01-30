@@ -413,12 +413,18 @@
       this.frameRows = 2;
       this.frameWidth = 0;
       this.frameHeight = 0;
+      this.spriteTriedFallback = false;
       this.sprite.onload = () => {
         this.frameWidth = Math.floor(this.sprite.width / this.frameColumns);
         this.frameHeight = Math.floor(this.sprite.height / this.frameRows);
         this.spriteLoaded = true;
       };
-      this.sprite.src = "/assets/lumisprite.png";
+      this.sprite.onerror = () => {
+        if (this.spriteTriedFallback) return;
+        this.spriteTriedFallback = true;
+        this.sprite.src = "/assets/lumisprite.png";
+      };
+      this.sprite.src = "assets/lumisprite.png";
       this.runFrameCount = 4;
       this.jumpFrameCount = 3;
       this.frameTime = 0;
