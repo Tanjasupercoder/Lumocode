@@ -407,8 +407,12 @@
   class PlayerLumi {
     constructor(audio) {
       this.audio = audio;
-      this.sprite = new Image();
-            const basePath = (() => {
+            this.spriteLoaded = false;
+      this.frameColumns = 4;
+      this.frameRows = 2;
+      this.frameWidth = 0;
+      this.frameHeight = 0;
+            const basePath = (() => {
         const path = window.location.pathname;
         const match = path.match(/^(.*\/)(public\/)?[^/]*$/);
         return match ? match[1] : "/";
