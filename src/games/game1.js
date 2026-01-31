@@ -407,34 +407,39 @@
   class PlayerLumi {
     constructor(audio) {
       this.audio = audio;
-            this.spriteLoaded = false;
+      this.sprite = new Image();
+      this.spriteLoaded = false;
       this.frameColumns = 4;
       this.frameRows = 2;
       this.frameWidth = 0;
       this.frameHeight = 0;
-            const basePath = (() => {
+
+      const basePath = (() => {
         const path = window.location.pathname;
         const match = path.match(/^(.*\/)(public\/)?[^/]*$/);
         return match ? match[1] : "/";
       })();
+
       this.spriteSources = [
         `${basePath}assets/lumisprite.png`,
         "/assets/lumisprite.png",
         "assets/lumisprite.png",
-        "/public/assets/lumisprite.png",
         "../assets/lumisprite.png",
       ];
       this.spriteSourceIndex = 0;
+
       this.sprite.onload = () => {
         this.frameWidth = Math.floor(this.sprite.width / this.frameColumns);
         this.frameHeight = Math.floor(this.sprite.height / this.frameRows);
         this.spriteLoaded = true;
       };
+
       this.sprite.onerror = () => {
         this.spriteSourceIndex += 1;
         if (this.spriteSourceIndex >= this.spriteSources.length) return;
         this.sprite.src = this.spriteSources[this.spriteSourceIndex];
       };
+
       this.sprite.src = this.spriteSources[this.spriteSourceIndex];
       this.runFrameCount = 4;
       this.jumpFrameCount = 3;
