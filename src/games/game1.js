@@ -408,14 +408,17 @@
     constructor(audio) {
       this.audio = audio;
       this.sprite = new Image();
-      this.spriteLoaded = false;
-      this.frameColumns = 4;
-      this.frameRows = 2;
-      this.frameWidth = 0;
-      this.frameHeight = 0;
+            const basePath = (() => {
+        const path = window.location.pathname;
+        const match = path.match(/^(.*\/)(public\/)?[^/]*$/);
+        return match ? match[1] : "/";
+      })();
       this.spriteSources = [
-        "assets/lumisprite.png",
+        `${basePath}assets/lumisprite.png`,
         "/assets/lumisprite.png",
+        "assets/lumisprite.png",
+        "/public/assets/lumisprite.png",
+        "../assets/lumisprite.png",
       ];
       this.spriteSourceIndex = 0;
       this.sprite.onload = () => {
