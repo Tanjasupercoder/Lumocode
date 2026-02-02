@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Fable";
-  src: url("public/assets/fonts/Fable.woff2") format("woff2");
+  src: url("assets/fonts/Fable.woff2") format("woff2");
   font-display: swap;
 }
 
@@ -32,7 +32,7 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-  background-image: url("public/assets/lumolandstartseite.png");
+  background-image: url("assets/lumolandstartseite.png");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -418,7 +418,7 @@ select:focus-visible,
 }
 
 .lumoland-start {
-  background-image: url("public/assets/gluehwuermchenwald.png");
+  background-image: url("assets/gluehwuermchenwald.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -559,7 +559,7 @@ select:focus-visible,
   position: relative;
   width: min(95vw, calc(95vh * 1.32));
   height: min(95vh, calc(95vw / 1.32));
-  background-image: url("public/assets/lumolandkarte.png");
+  background-image: url("assets/lumolandkarte.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
